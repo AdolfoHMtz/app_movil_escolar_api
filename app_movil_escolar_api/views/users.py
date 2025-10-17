@@ -1,20 +1,21 @@
 from django.db.models import *
 from django.db import transaction
-from app_movil_escolar_api.serializers import UserSerializer
-from app_movil_escolar_api.serializers import *
-from app_movil_escolar_api.models import *
+from app_movil_escolar_api.serializers import UserSerializer, AdminSerializer
+from app_movil_escolar_api.models import Administradores
 from rest_framework import permissions
 from rest_framework import generics
 from rest_framework import status
 from rest_framework.response import Response
-from django.contrib.auth.models import Group
+from django.contrib.auth.models import Group, User
 
 class AdminAll(generics.CreateAPIView):
     permission_classes = (permissions.IsAuthenticated,)
     def get(self, request, *args, **kwargs):
         user = request.user
-        #TODO: Regresar perfil del usuario
-        return Response({})
+        # Obtener todos los administradores
+        admins = Administradores.objects.all()
+        serializer = AdminSerializer(admins, many=True)
+        return Response(serializer.data, 200)
 
 class AdminView(generics.CreateAPIView):
     #Registrar nuevo usuario
@@ -64,3 +65,5 @@ class AdminView(generics.CreateAPIView):
             return Response({"admin_created_id": admin.id }, 201)
 
         return Response(user.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        
