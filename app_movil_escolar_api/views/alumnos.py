@@ -19,6 +19,7 @@ class AlumnoAll(generics.CreateAPIView):
 
 
 class AlumnoView(generics.CreateAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
     # Registrar nuevo alumno
     @transaction.atomic
     def post(self, request, *args, **kwargs):

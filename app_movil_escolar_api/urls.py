@@ -26,6 +26,10 @@ urlpatterns = [
         path('maestro/', maestros.MaestroView.as_view()),
     #Maestro Data
         path('lista-maestros/', maestros.MaestroAll.as_view()),
+    #Login
+        path('login/', auth.CustomAuthToken.as_view()),
+    #Logout
+        path('logout/', auth.Logout.as_view())
 ]
 
 if settings.DEBUG:

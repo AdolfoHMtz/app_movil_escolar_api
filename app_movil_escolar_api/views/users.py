@@ -10,12 +10,12 @@ from django.contrib.auth.models import Group, User
 
 class AdminAll(generics.CreateAPIView):
     permission_classes = (permissions.IsAuthenticated,)
+    # Invocamos la petición GET para obtener todos los administradores
     def get(self, request, *args, **kwargs):
-        user = request.user
-        # Obtener todos los administradores
-        admins = Administradores.objects.all()
-        serializer = AdminSerializer(admins, many=True)
-        return Response(serializer.data, 200)
+        admin = Administradores.objects.filter(user__is_active = 1).order_by("id")
+        lista = AdminSerializer(admin, many=True).data
+        return Response(lista, 200)
+
 
 class AdminView(generics.CreateAPIView):
     #Registrar nuevo usuario
@@ -66,4 +66,3 @@ class AdminView(generics.CreateAPIView):
 
         return Response(user.errors, status=status.HTTP_400_BAD_REQUEST)
 
-        

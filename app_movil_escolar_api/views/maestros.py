@@ -19,6 +19,8 @@ class MaestroAll(generics.CreateAPIView):
 
 
 class MaestroView(generics.CreateAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    
     # Registrar nuevo maestro
     @transaction.atomic
     def post(self, request, *args, **kwargs):
